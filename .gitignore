@@ -1,0 +1,34 @@
+# Segredos e credenciais
+*.env
+!*.env.example
+*.key
+*.pem
+*.crt
+*-key.json
+secrets/
+.vault_pass
+
+# Chaves privadas WireGuard
+privatekey
+*.privatekey
+wg-private-*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl
+
+# Ansible
+*.retry
+inventory/hosts.real
+group_vars/*/vault.yml
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp

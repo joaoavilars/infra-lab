@@ -1,0 +1,46 @@
+flowchart TB
+    Internet([Usuários da Internet])
+    CF[Cloudflare Edge]
+    Internet -->|HTTPS| CF
+
+    subgraph OCI["Oracle Cloud"]
+        subgraph Gateway["gateway (1 vCPU / 1GB RAM - x86)"]
+            CFT["cloudflared tunnel"]
+            WG0["WireGuard hub<br/>10.13.13.1"]
+            CFT --> WG0
+        end
+
+        subgraph Scarabeus["scarabeus (4 vCPU / 24GB ARM)"]
+            WG1["WireGuard 10.13.13.5"]
+            APP1["Web apps / APIs<br/>K8s / Swarm"]
+            WG1 --- APP1
+        end
+
+        subgraph Libellula["libellula (4 vCPU / 24GB ARM)"]
+            WG2["WireGuard 10.13.13.6"]
+            DOCKER["Containers Docker"]
+            WG2 --- DOCKER
+        end
+
+        subgraph Lucanus["lucanus (4 vCPU / 24GB ARM)"]
+            WG3["WireGuard 10.13.13.7"]
+            SVC["Self-hosted<br/>Ollama"]
+            WG3 --- SVC
+        end
+    end
+
+    CF -.->|Tunnel| CFT
+    WG0 <-->|encrypted mesh| WG1
+    WG0 <-->|encrypted mesh| WG2
+    WG0 <-->|encrypted mesh| WG3
+    WG1 <-->|encrypted mesh| WG2
+    WG2 <-->|encrypted mesh| WG3
+    WG1 <-->|encrypted mesh| WG3
+
+    classDef gateway fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    classDef workload fill:#dbeafe,stroke:#2563eb,stroke-width:2px
+
+    class Gateway gateway
+    class Scarabeus workload
+    class Libellula workload
+    class Lucanus workload
