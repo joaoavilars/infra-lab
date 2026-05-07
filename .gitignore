@@ -32,3 +32,6 @@ group_vars/*/vault.yml
 .DS_Store
 Thumbs.db
 *.swp
+
+AGENTS.md
+CHANGELOG.md
